@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d4f567ab39d7784a87ea75104176bb9, type: 3}
+  m_Name: Dagger
+  m_EditorClassIdentifier: 
+  name: Dagger
+  description: Very light, capable of swift actions.
+  itemType: weapon
+  buyPrice: 5
+  sellPrice: 1
+  image: {fileID: 21300000, guid: 1ac82c879680960498ff91ad63817ed8, type: 3}
+  lvl: 1
+  abiType: 
+  abiAmt: 0
+  atk: 5
