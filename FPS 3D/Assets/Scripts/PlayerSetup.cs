@@ -10,6 +10,15 @@ public class PlayerSetup : NetworkBehaviour
     [SerializeField]
     string remoteLayerName = "RemotePlayer";
 
+    [SerializeField]
+    string dontDrawLayerName = "DontDraw";
+    [SerializeField]
+    GameObject playerGraphics;
+
+    [SerializeField]
+    GameObject playerUIPrefab;
+    private GameObject playerUIInstance;
+
     Camera sceneCam;
 
     private void Start()
@@ -29,9 +38,27 @@ public class PlayerSetup : NetworkBehaviour
             {
                 sceneCam.gameObject.SetActive(false);
             }
+
+            // disable player graphics for local player
+            SetLayerRecursively(playerGraphics, LayerMask.NameToLayer(dontDrawLayerName));
+
+            // create playerUI
+            playerUIInstance = Instantiate(playerUIPrefab);
+            playerUIInstance.name = playerUIPrefab.name;
         }
 
         GetComponent<Player>().Setup();
+    }
+
+    // recursive methods are methods that call itself
+    void SetLayerRecursively(GameObject obj, int newLayer)
+    {
+        obj.layer = newLayer;
+
+        foreach(Transform child in obj.transform)
+        {
+            SetLayerRecursively(child.gameObject, newLayer);
+        }
     }
 
     // called everytime a client is set up locally
@@ -60,6 +87,8 @@ public class PlayerSetup : NetworkBehaviour
     // called when object is disabled/destroyed
     private void OnDisable()
     {
+        Destroy(playerUIInstance);
+
         // renable scene cam when player leave
         if(sceneCam != null)
         {

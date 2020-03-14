@@ -4,6 +4,7 @@ using UnityEngine;
 
 [RequireComponent(typeof(PlayerMotor))]
 [RequireComponent(typeof(ConfigurableJoint))]
+[RequireComponent(typeof(Animator))]
 public class PlayerController : MonoBehaviour
 {
     // make it show up in inspector even though its private
@@ -15,6 +16,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float thrusterForce = 3000f;
 
+
     [Header("Spring Settings")]
     [SerializeField]
     private JointProjectionMode jointMode = JointProjectionMode.PositionAndRotation;
@@ -23,14 +25,16 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     private float jointMaxForce = 40f;
 
-
+    // component caching
     private PlayerMotor motor;
     private ConfigurableJoint joint;
+    private Animator animator;
 
     private void Start()
     {
         motor = GetComponent<PlayerMotor>();
         joint = GetComponent<ConfigurableJoint>();
+        animator = GetComponent<Animator>();
 
         SetJointSettings(jointSpring);
     }
@@ -39,14 +43,17 @@ public class PlayerController : MonoBehaviour
     {
         // calculate movement velocity as 3d vector
         // these axis are setup in unity project settings
-        float moveX = Input.GetAxisRaw("Horizontal");
-        float moveZ = Input.GetAxisRaw("Vertical");
+        float moveX = Input.GetAxis("Horizontal");
+        float moveZ = Input.GetAxis("Vertical");
 
         Vector3 moveHorizontal = transform.right * moveX;
         Vector3 moveVertical = transform.forward * moveZ;
 
         // normalised mean total combined max length should be 1
         Vector3 velocity = (moveHorizontal + moveVertical).normalized * speed;
+
+        // animate movement
+        animator.SetFloat("ForwardVelocity", moveZ);
 
         // apply movement
         motor.Move(velocity);

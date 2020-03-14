@@ -9,4 +9,10 @@ public class PlayerWeapon
     public int damage = 10;
     public float range = 100f;
 
+    // 0 means is single fire
+    public float fireRate = 0f;
+
+    public GameObject graphics;
+
+    
 }
